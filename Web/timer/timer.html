@@ -1,0 +1,307 @@
+<html>
+
+<script>
+
+    // var currentQuestion = 1
+
+    function startProgram()
+    {
+        window.START_TIME = new Date()
+        window.lastTime = START_TIME.getTime()
+        window.times = [lastTime]
+        window.skippedArray = []
+        window.CompletedArray = []
+
+        window.q_num = parseInt(document.getElementById('txt_qstNum').value)
+        
+        // alert("There are " + q_num + " questions")
+        
+        document.getElementById('div_qstNum').remove()
+        
+        f_addLog("Working on Question Number 1")
+        
+        window.availableArray = [...Array(q_num+1).keys()]
+        availableArray.shift()
+
+        window.allQuestionsArray = availableArray
+
+        // alert(allQuestionsArray)
+        window.q_timeObject = {}
+        for (const q of availableArray)
+        {
+            q_timeObject[q] = 0
+        }
+        // for (var n in q_timeObject) 
+        // {
+        //     document.write(n)
+        // }
+        
+        document.getElementById('div_actionBtns').className = 'seen'
+        document.getElementById('p_qNum').innerHTML = q_num
+        // return q_num
+    }
+
+
+    function Action(k)
+    {
+        
+        var param_lastTime = times.slice(-1)
+        var b_chosen = 0
+        var vSkipped = document.getElementById('p_skipped')
+        var vcomplete = document.getElementById('p_complete')
+        var p_status = document.getElementById("p_currentQ")
+        var currentQuestion = parseInt(p_status.innerHTML)
+        var qNum = parseInt(document.getElementById('p_qNum').innerHTML)
+        var allQuestionsArray = [...Array(qNum+1).keys()]
+        
+        if (k == 'c')
+        {
+            stopTime(param_lastTime, 'c', currentQuestion)
+            if (CompletedArray.includes(currentQuestion)==false )
+            {
+            CompletedArray.push(currentQuestion) 
+            }
+            if (availableArray.includes(currentQuestion)){
+                availableArray = removeElement(currentQuestion, availableArray)
+            }
+            if (skippedArray.includes(currentQuestion)) {
+                skippedArray = removeElement(currentQuestion, skippedArray)
+            }
+        }
+        else if (k == 's') {
+            stopTime(param_lastTime, 's', currentQuestion)
+            if (skippedArray.includes(currentQuestion)==false )
+            {
+            skippedArray.push(currentQuestion) 
+            }
+            if (availableArray.includes(currentQuestion)){
+                availableArray = removeElement(currentQuestion, availableArray)
+            }
+            if (CompletedArray.includes(currentQuestion))
+            {
+                CompletedArray = removeElement(currentQuestion, CompletedArray)
+            }
+        }
+        else 
+        {
+            stopTime(param_lastTime, 'b', currentQuestion)
+            b_chosen = parseInt(document.getElementById('txt_back2qstNum').value)
+            console.log("RAW b_chosen is:" + b_chosen)
+            console.log("ALL QST: " +allQuestionsArray)
+            f_addLog(allQuestionsArray)
+            if (allQuestionsArray.includes(b_chosen) == false && currentQuestion > 1) 
+            {
+                b_chosen = currentQuestion - 1
+                console.log("Empty!")
+            }
+            else if (currentQuestion == 1) {b_chosen = currentQuestion}
+
+            if (skippedArray.includes(currentQuestion)==false )
+            {
+            skippedArray.push(currentQuestion) 
+            }
+            if (CompletedArray.includes(currentQuestion))
+            {
+                CompletedArray = removeElement(currentQuestion, CompletedArray)
+            }
+        }
+        console.log("b_chosen is: " + b_chosen)
+
+        if (skippedArray.length > 0)
+        {
+            vSkipped.className = 'seen'
+            vSkipped.innerHTML = "Skipped Questions: " + skippedArray
+        }
+        else {vSkipped.className = 'unseen'}
+        
+        if (CompletedArray.length > 0)
+        {
+            vcomplete.className = 'seen'
+            vcomplete.innerHTML = "Complete Questions: " + CompletedArray
+        }
+        else {vcomplete.className = 'unseen'}
+
+
+        console.log("Current q: " + currentQuestion)
+        var nextQuestion = f_nextQuestion(Param_q=currentQuestion, k=k, q_choose=b_chosen, Param_qNum=qNum)
+        currentQuestion = nextQuestion
+        p_status.innerHTML = currentQuestion
+
+        console.log("Next q: " + currentQuestion)
+        console.log("Next avail: " + availableArray)
+
+        if (nextQuestion > qNum)
+        {
+            document.getElementById('div_actionBtns').className = 'unseen'
+            f_addLog("You Are Done!")
+            f_addLog("-----------x-x-x-x-x-x-x-----------")
+            f_addLog(" ")
+            f_addLog("Total Time Of Entire Chapter: " + f_dateDiff(START_TIME).diff)
+            for (obj of CompletedArray)
+            {
+                var prnt = "Question Number #" + obj + ",    Total Time: " + f_FormatTime(q_timeObject[obj])
+                f_addLog(prnt)
+                console.log(q_timeObject[obj])
+            }
+            // f_getStats()
+        }
+        else if (nextQuestion <= qNum) {
+            f_addLog("Working on Question Number " + nextQuestion)
+        }
+        console.log(q_timeObject)
+    }
+
+    // function f_getStats ()
+    // {
+    // }
+
+    //  printf "%0*d" width num
+    function leftFillNum(num, targetLength) {
+        return num.toString().padStart(targetLength, 0);
+    }
+
+
+    function removeElement (v, arr)
+    {
+        var index = arr.indexOf(v);
+
+        if (index > -1) {
+        arr.splice(index, 1);
+        }   
+        console.log("Index is " + index)
+        return arr
+
+    }
+
+
+    function f_nextQuestion(Param_q, k, q_choose, Param_qNum)
+    {
+        console.log("skiparray is: " + skippedArray)
+        var Param_nextQuestion = 0
+        if (k == 'b')
+        {
+            Param_nextQuestion = q_choose
+        }
+        
+        else if (availableArray.length > 0)
+
+        {
+            var avBeforeQ = []
+            var avAfterQ = []
+            for (const v of availableArray)
+            {
+                if (v > Param_q) {avAfterQ.push(v)}
+                else {avBeforeQ.push(v)}
+            }
+
+            if ( (availableArray.includes(Param_q + 1)) ) // && (CompletedArray.includes(Param_q + 1)==false) ) // REDUNDANT
+                {
+                    Param_nextQuestion = Param_q + 1
+                }
+            // else if (skippedArray.length == 0)
+            //     {
+            //         Param_nextQuestion = Param_qNum + 1
+            //     }
+            else if (avAfterQ.length > 0)
+                {
+                    Param_nextQuestion = avAfterQ.slice(0)
+                }
+            else {
+                    Param_nextQuestion = avBeforeQ.slice(0)
+                }
+        }
+
+        else if (k == 's' && Param_q != skippedArray.slice(-1) && skippedArray.includes(Param_q))
+            {
+            Param_nextQuestion = skippedArray.slice(skippedArray.indexOf(Param_q)+1)
+            }
+        // else if (skippedArray.length == 1) {Param_nextQuestion = skippedArray.slice(0)}
+
+        else if (skippedArray.length > 0) {Param_nextQuestion = skippedArray.slice(0)}
+        
+        else {Param_nextQuestion = Param_qNum + 1}
+
+        return parseInt(Param_nextQuestion)
+    }
+
+    function f_addLog(txt)
+    {
+        var addLog = document.createElement("P")
+        addLog.innerHTML = txt
+        document.body.append(addLog)
+        
+    }
+
+    function f_dateDiff(a_time, b_time=new Date().getTime())
+    {
+        var diff_s = parseInt((b_time - a_time)/1000)
+        diffFormat = f_FormatTime(diff_s)
+        return {'diff': diffFormat, 'diffInSeconds': diff_s}
+        
+    }
+    
+    function f_FormatTime (t)
+    {
+        var diff_hh = leftFillNum(parseInt(t / 3600), 2)
+        var diff_mm = leftFillNum(parseInt( (t - (diff_hh*3600)) / 60), 2)
+        var diff_ss = leftFillNum(parseInt( t - (diff_hh*3600 + diff_mm*60)), 2)
+        var diffFormat = diff_hh + ':' + diff_mm + ":" + diff_ss
+        return diffFormat
+        
+    }
+
+    function stopTime (Param_lastTime, k, Param_currentQst)
+    {
+        var now = new Date()
+        var ms = now.getTime()
+        var h = now.getHours()
+        var m = now.getMinutes()
+        var s = now.getSeconds()
+        var dateFormat = h + ":" + m + ":" + s
+        var dateDiff = f_dateDiff(Param_lastTime,ms)
+        var actionKey = {'c': 'Completed',
+                         's': 'Skipped',
+                         'b': 'Skipped'}
+        times.push(ms)
+        q_timeObject[Param_currentQst] += dateDiff.diffInSeconds
+        f_addLog("-------------------------------------")
+        f_addLog(actionKey[k] + " Question #" + Param_currentQst + " \t   " + dateDiff.diff) //TODO: Add Tab between Text and Time
+        f_addLog("-------------------------------------")
+        f_addLog("-") // Add Line Properly
+    }
+
+
+</script>
+
+<body>
+
+    <style type="text/css">
+        .unseen {
+            visibility: hidden;
+        }
+        .seen {
+            visibility: visible;
+        }
+    </style>
+
+    <div id='div_qstNum' style="text-align: center;">
+        <input type="text" id="txt_qstNum" placeholder="How Many Question Are they?" size="35"/> 
+        <input type="submit" value='Submit' id="sbmt_qstNum" onclick="startProgram()"/>
+    </div>
+    <div id="div_actionBtns" class="unseen" style="text-align: center;">
+        <input type="button" value="Complete" onclick="Action('c')"/> 
+        <input type="button" value="Skip" onclick="Action('s')"/>
+        <input type="button" value="Go Back" onclick="Action('b')"/>
+        <br>
+        <input type="text" id="txt_back2qstNum" placeholder="To which Question do you wish to go back?" size="35"/> 
+        <p id='p_skipped' class="unseen"></p>
+        <p id='p_complete' class="unseen"></p><br>
+        <!-- <div id='div_currentStatus' class="unseen"> -->
+            <label>Currently working on Question #</label> <label id="p_currentQ">1</label> Out of <label id="p_qNum"></label>
+        <!-- </div> -->
+    </div>
+</body>
+
+
+
+</html>
