@@ -17,6 +17,7 @@ DELAY = 0.1
 delay = DELAY
 dist = 30
 head_speed = 0
+NEW_SEGMENTS = 2
 sc = tt.Turtle()
 sc.speed(0)
 sc.shape("square")
@@ -152,17 +153,19 @@ def score_clear(hscr, scr):
 segments = []
 
 
-def add_segment(last_x_y):
-    new_seg = Snake()
-    new_seg.hideturtle()
-    new_seg.penup()
-    new_seg.goto(last_x_y[0], last_x_y[1])
-    new_seg.showturtle()
+def add_segment():
+    new_seg = tt.Turtle()
+    # new_seg.hideturtle()
     new_seg.speed(0)
-    new_seg.color('yellow')
+    new_seg.shape('square')
+    new_seg.color('green')
+    new_seg.penup()
+    # new_seg.goto(last_x_y[0], last_x_y[1])
+    
     segments.append(new_seg)
-    if len(segments) > 1:
-        segments[-2].color('green')
+    if len(segments) % 3 == 0:
+        new_seg.color('yellow')
+    # new_seg.showturtle()
 
 
 def move_head():
@@ -184,7 +187,7 @@ seg_ind_2 = 0
 while True:
     wn.update()
     last_head_cords = (head.xcor(), head.ycor())
-
+    move_head()
     if collision_with_apple():
         spawn_apple()
         score += 10
@@ -199,9 +202,12 @@ while True:
 
     # if seg_ind_1 == 1:
         if len(segments) > 0:
-            add_segment((segments[-1].xcor(), segments[-1].ycor()))
+            add_segment()
         else:
-            add_segment(last_head_cords)
+            add_segment()
+
+        for i in range(NEW_SEGMENTS-1):
+            add_segment()
 
         # seg_ind_1 = 0
         # seg_ind_2 = 0
@@ -219,17 +225,22 @@ while True:
         score = 0
         score_clear(high_score, score)
 
-    move_head()
-
-    for index in range(len(segments)-1,0,-1):
-        x = segments[index-1].xcor()
-        y = segments[index-1].ycor()
-        segments[index].goto(x,y)
+    # for index in range(len(segments)-1,0,-1):
+    #     x = segments[index-1].xcor()
+    #     y = segments[index-1].ycor()
+    #     segments[index].goto(x,y)
     #move segment 0 to head
-    if len(segments)>0:
+    
+    if len(segments) > 0:
+#         segments[-1].color('green')
         x = last_head_cords[0]
         y = last_head_cords[1]
-        segments[0].goto(x,y)
+        segments[-1].goto(x,y)
+        if len(segments) > 1:
+            segments = [segments[-1]] + segments[:-1]
+#         segments[-1].color('yellow')
+
+
 
     # for ii in range(len(segments)):
     #     i = ii * 1
