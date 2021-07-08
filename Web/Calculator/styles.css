@@ -1,0 +1,37 @@
+
+*, *::before, *::after {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: x-large;
+    align-items: center;
+}
+
+body {
+    max-width: 500px;
+    margin: auto;
+    background-color: lightgoldenrodyellow;
+    /* background :linear-gradient(to-right, lightgoldenrodyellow, #AAFF); */
+
+}
+
+.head {
+    font-size:30px;
+}
+
+.span-one {
+    width: 49px;
+    height: 50px;
+}
+
+.span-two {
+    width: 105px;
+    height: 50px;
+
+}
+
+.buttons {
+    border: none;
+}
+
+.buttons :hover{
+    background-color: lightgreen;
+}

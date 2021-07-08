@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+
+<body>
+    
+    <h1 class="head">Calculator</h1>
+    
+    <label id="pre-output" style="font-size: medium;">0</label> 
+    <label id="output-op"></label>
+    <br>
+    <label id="output-id">0</label>
+
+
+    <div class="calc">
+        <div id="buttons" class="buttons">
+            <input type="button" stype='AC' class="span-two" value="AC" id="ACbtn"    onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='DEL' class="span-one" value="DEL" id="DELbtn" onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='op' class="span-one" value="*" id="*btn"      onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <br> 
+            <input type="button" stype='num' class="span-one" value="1" id="1btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="2" id="2btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="3" id="3btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='op' class="span-one" value="/" id="/btn"      onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <br>     
+            <input type="button" stype='num' class="span-one" value="4" id="4btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="5" id="5btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="6" id="6btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='op' class="span-one" value="+" id="+btn"      onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <br>     
+            <input type="button" stype='num' class="span-one" value="7" id="7btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="8" id="8btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="9" id="9btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='op' class="span-one" value="-" id="-btn"      onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <br>     
+            <input type="button" stype='num' class="span-one" value="." id=".btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='num' class="span-one" value="0" id="0btn"     onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+            <input type="button" stype='equal' class="span-two" value="=" id="=btn"   onclick="calcFunc([this.value, document.getElementById(this.id).getAttribute('stype')])">
+        </div>
+    </div>
+</body>
+</html>

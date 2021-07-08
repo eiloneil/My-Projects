@@ -9,7 +9,7 @@ while (i < 30) {
     } 
 }
 
-// b()
+b()
 
 function log(a='default', ...other) {
     for (var item of [a, other, arguments]) {
@@ -29,4 +29,13 @@ function log(a='default', ...other) {
     }
 }
 
-log('hello', 'bye', 'adios')
+log('hello', 'bye', 'adios');
+
+
+function LoopInts(num) {
+    for (var i = 0; i < num; i++) {
+        console.log(i);
+    };
+};
+
+LoopInts(10)
