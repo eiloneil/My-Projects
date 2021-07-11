@@ -14,6 +14,7 @@ def list_to_dict(lst):
 def print_dict(dict):
     for key in dict.keys():
         print(key, '-', dict[key])
+    print()
 
 
 def multipleSheets():
@@ -25,10 +26,8 @@ def multipleSheets():
     filenames_lst = [filename.replace(dir_path+'\\', "") for filename in glob.glob(os.path.join(dir_path, '*.xlsx'))]
     filenames_dict = list_to_dict(filenames_lst)
     print_dict(filenames_dict)
-    print()
     # Choose Excel
     excel_number = int(input('Insert Excel NUMBER: '))
-    print()
     chosen_excel = filenames_dict[excel_number]
 
     # Get all Excel Sheets
@@ -39,7 +38,6 @@ def multipleSheets():
     print_dict(sheets_dict)
     # Choose Sheet
     sheet_number = int(input('Insert Sheet NUMBER: '))
-    print()
     chosen_sheet = sheets_dict[sheet_number]
     
     # Get all Sheet's Columns
@@ -65,6 +63,7 @@ def multipleSheets():
 
     print('DONE - Export with Multiple Sheets')
     return False
+
 
 def main():
     ind = True
