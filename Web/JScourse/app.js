@@ -1,32 +1,16 @@
-var a = 'eilon'
 
-var i = 0
+window.addEventListener('keyup', keyBoardPress);
 
-function b() {
-while (i < 30) {
-    console.log(i)
-    i += 1
-    } 
-}
+function keyBoardPress(key) {
+    
+    var pressedKey = key.key;
+    var finalVal;
 
-// b()
-
-function log(a='default', ...other) {
-    for (var item of [a, other, arguments]) {
-        
-        if (typeof item === 'object') {
-
-        for (var mini_item of item) {
-            console.log(mini_item)
-            }
-        }
-
-        else {
-            console.log(item)
-        }
-
-
+    if (key.key === 'Enter' || key.key === 'Backspace' ) {
+        finalVal = 'Special Value';
     }
+    else {
+        finalVal = key.key
+    };
+    console.log(finalVal)
 }
-
-log('hello', 'bye', 'adios')

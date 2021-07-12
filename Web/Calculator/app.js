@@ -26,16 +26,15 @@ window.addEventListener('keyup', keyBoardPress);
 function keyBoardPress(key) {
     
     var btnName = key.key;
+    var finalBtnName;
     console.log(btnName)
     
-    if (key.key === 'Enter' || key.key === 'Backspace' ) {
+    if (btnName === 'Enter' || btnName === 'Backspace' ) {
         btnName = operandsObj['special operands'][key.key];
-        document.getElementById(btnName+'btn').onclick();
-    }
-    else {
-        btnName = key.key
-        document.getElementById(key.key+'btn').onclick();
     };
+    finalBtnName = btnName + 'btn'
+    console.log(finalBtnName)
+    document.getElementById(finalBtnName).onclick();
 }
 
 
