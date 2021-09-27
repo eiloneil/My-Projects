@@ -6,6 +6,11 @@ var cnvHeight = cnv.height
 var canvasOffsetX = 7
 var canvasOffsetY = 27
 
+var nextCoords = [0, 0];
+var rnd;
+var anchors;
+var nextAnchor;
+
 var anchorCoordinates = {};
 var anchorColors = {};
 
@@ -39,34 +44,36 @@ cnv.addEventListener('mousedown', function(e) {
 }, false);
 
 
+anchors = Object.keys(anchorCoordinates);
 
 function main() {
     // Starting Point
-    var nextCoords = drawStartingPoing();
+    nextCoords = drawStartingPoing();
     console.log(anchorCoordinates)
     
     // Set number of iterations
     numIterations = parseFloat(document.getElementById('numIterations').value)
     console.log(numIterations)
     
-    var anchors = Object.keys(anchorCoordinates);
-    var nextAnchor;
-    var rnd;
-    var rndResults = {0:0, 1:0, 2:0, 3:0, 4:0};
     for (var i = 0; i < numIterations; i++) {
         // sleepFor(5);
-        rnd = getRndInteger(0, anchorsNum);
-        nextAnchor = anchors[rnd];
-        nextCoords = getHalfWay(nextCoords, anchorCoordinates[nextAnchor]);
-        drawCircle(ctx, nextCoords, 1, anchorColors[nextAnchor]);
-        rndResults[rnd] ++;
+        drawNextDot();
     };
 };
+
+function drawNextDot() {
+    rnd = getRndInteger(0, anchorsNum);
+    nextAnchor = anchors[rnd];
+    nextCoords = getHalfWay(nextCoords, anchorCoordinates[nextAnchor]);
+    drawCircle(ctx, nextCoords, 1, anchorColors[nextAnchor]);
+    
+}
 
 function presetTriangle() {
     anchorCoordinates = _.clone(triangleAnchors);
     anchorColors = triangleColors;
     anchorsNum = 3;
+    anchors = Object.keys(anchorCoordinates);
     console.log(anchorCoordinates);
     drawAnchors(anchorCoordinates);
 };
