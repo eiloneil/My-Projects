@@ -6,6 +6,9 @@ var cnvHeight = cnv.height
 var canvasOffsetX = 7
 var canvasOffsetY = 27
 
+var CheckBox = true;
+var firstIteration = true; 
+
 var nextCoords = [0, 0];
 var rnd;
 var anchors;
@@ -33,32 +36,44 @@ var triangleColors = {anchor0: 'red'
 // drawAnchors()
 
 var anchorsNum = Object.keys(anchorCoordinates).length
+anchors = Object.keys(anchorCoordinates);
 
 cnv.addEventListener('mousedown', function(e) {
     // alert([e.clientX, e.clientY])
     var mouseCoords = [e.clientX - canvasOffsetX, e.clientY - canvasOffsetY]
     drawCircle(ctx, mouseCoords, 15, 'black')
-    anchorCoordinates['anchor' + anchorsNum] = mouseCoords
-    anchorColors['anchor' + anchorsNum] = generateColorHex()
+    var newAnchorName = 'anchor' + anchorsNum
+    anchorCoordinates[newAnchorName] = mouseCoords
+    anchorColors[newAnchorName] = generateColorHex()
+    anchors.push(newAnchorName)
+    console.log('---    Anchors Array   ---')
+    console.log(anchors)
+    console.log('--------------------------')
     anchorsNum ++
 }, false);
 
 
-anchors = Object.keys(anchorCoordinates);
 
 function main() {
     // Starting Point
-    nextCoords = drawStartingPoing();
-    console.log(anchorCoordinates)
+    if (firstIteration) {
+        nextCoords = drawStartingPoing();
+    };
+    console.log("anchorCoordinates: " + anchorCoordinates);
     
     // Set number of iterations
     numIterations = parseFloat(document.getElementById('numIterations').value)
-    console.log(numIterations)
+    if (!(numIterations > 0)) {
+        numIterations = 100000    
+    }
+    console.log("Number of iterations: " + numIterations)
     
     for (var i = 0; i < numIterations; i++) {
         // sleepFor(5);
         drawNextDot();
     };
+
+    firstIteration = false;
 };
 
 function drawNextDot() {
@@ -85,9 +100,21 @@ function drawAnchors(anchors=anchorCoordinates){
 };
 
 function drawStartingPoing() {
-    var startingCoords = [getRndInteger(10, 700), getRndInteger(10, 400)]
-    drawCircle(ctx, startingCoords, 5, 'yellow', true)
+    var startingCoords = [getRndInteger(10, cnvWidth), getRndInteger(10, cnvHeight)]
+    if (CheckBox) {
+        drawCircle(ctx, startingCoords, 5, 'yellow', true)
+    };
     return startingCoords
+}
+
+function switchCheckbox() {
+    if (CheckBox) {
+        CheckBox = false
+    }
+
+    else {
+        CheckBox = true
+    }
 }
 
 function getHalfWay(currentCoords, nextCoords) {
@@ -117,8 +144,10 @@ function clearCanvas(clearAnchors=false) {
     if (clearAnchors) {
         anchorCoordinates = {};
         anchorColors = {};
+        anchors = [];
         anchorsNum = 0;
     };
+    firstIteration = true;
 };  
 
 function generateColorHex() {

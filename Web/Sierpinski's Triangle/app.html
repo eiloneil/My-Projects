@@ -5,14 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sierpinski's Triangle</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <input type="button" onclick="main()" value="Start iterations"> 
-    <input type="button" onclick="clearCanvas(true)" value="Clear All"> 
-    <input type="button" onclick="clearIterations()" value="Clear Iterations"> 
-    <input type="button" onclick="presetTriangle()" value="Draw Triangle"> 
-    <input type="button" onclick="drawNextDot()" value="Draw Next Dot"> 
+    <input type="button" onclick="main()" value="Start iterations" class='button'> 
+    <input type="button" onclick="clearCanvas(true)" value="Clear All" class='button'> 
+    <input type="button" onclick="clearIterations()" value="Clear Iterations" class='button'> 
+    <input type="button" onclick="presetTriangle()" value="Draw Triangle" class='button'> 
+    <input type="button" onclick="drawNextDot()" value="Draw Next Dot" class='button'> 
     <input type="text" id="numIterations" placeholder="Number of Iterations"> 
+    <input type="checkbox" id="showStartPoint" onclick="switchCheckbox()" checked> <label>Show Starting Point</label> 
     <br>
     <canvas id="myCanvas" width="1900" height="800" style="border:1px solid #d3d3d3;">
         
