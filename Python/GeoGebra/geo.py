@@ -69,7 +69,7 @@ def show_function(df):
 
 col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 params = col1.text_input("A", 0), col2.text_input("B", 1), col3.text_input("C", 0), col4.text_input("D", -10)
-A, B, C, D = map(int, params)
+A, B, C, D = map(float, params)
 
 def func_exp(x):
     return A*x**3 + B*x**2 + C*x + D
