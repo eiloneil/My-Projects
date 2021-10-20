@@ -1,3 +1,5 @@
+import re
+from numpy import divide
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,12 +9,12 @@ import math
 
 # %matplotlib inline
 
-def calc_func(l_rng=-5, h_rng=5, y_rng=100, func=None):
+def calc_func(l_rng=-5, h_rng=5, y_rng=100, func=None, div=50):
 #     func_dict = {}
     x_vals = []
     y_vals = []
     is_defined = []
-    divider = 100
+    divider = div
     for x in range(l_rng*divider, (divider*h_rng)+1):    
         x = x/divider
         
@@ -60,29 +62,69 @@ def show_function(df):
         ax.axvline(linewidth=1, color='k')
     if max(df_def['Y'])+axes_limit >= 0 and min(df_def['Y'])-axes_limit <= 0:    
         ax.axhline(linewidth=1, color='k')
-#     plt.show()
     
     return fig
 
 
+def get_params(param_gen):
+    for param in param_gen:
+        if int(param) == param:
+            param = int(param)
+        yield param
 
-
-col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
-params = col1.text_input("A", 0), col2.text_input("B", 1), col3.text_input("C", 0), col4.text_input("D", -10)
-A, B, C, D = map(float, params)
 
 def func_exp(x):
     return A*x**3 + B*x**2 + C*x + D
 
 
-x = st.slider('x', max_value=1000, value=10)  # 👈 this is a widget
-y = st.slider('y', max_value=1000, value=10)  # 👈 this is a widget
+
+######################################
+# Start Streamlit Web Page Development
+######################################
+
+
+st.header("Welcome to GeoGebra!")
+st.subheader('A place where you can visualize mathematical functions')
+st.subheader("")
+
+
+md_style = "text-align:center;"
+exp_txt = 'Y = AX^3 + BX^2 + CX + D'
+exp_md = f'<p style={md_style} font-size=55px> {exp_txt} </p>'
+# st.markdown(exp_md, unsafe_allow_html=True)
+
+col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+params = col1.text_input("A", 0), col2.text_input("B", 1), col3.text_input("C", 0), col4.text_input("D", -10, help=exp_txt)
+params = map(float, params)
+
+
+
+params = get_params(params)
+A, B, C, D = params
+
+a_str = f'{A}*X^3' if A != 0 else ''
+b_str = f'{B}*X^2' if B != 0 else ''
+c_str = f'{C}*X' if C != 0 else ''
+d_str = f'{D}' if D != 0 else ''
+
+param_strs = (a_str, b_str, c_str, d_str)
+param_final_str = " + ".join(filter(lambda x: x != "",param_strs)).replace("-+", "-").replace("+-", "-").replace("+ -", "- ")
+
+
+md = f'<p font-size="55px" style={md_style}> Y = {param_final_str} </p>'
+st.markdown(md, unsafe_allow_html=True)
+
+
+
+x = st.slider('x', max_value=1000, value=25) 
+y = st.slider('y', max_value=1000, value=25) 
+
 edges = x
 highest_y = y
 
-df = calc_func(-edges, edges, highest_y, func_exp)
+divider = st.slider('Data Density', max_value=200, value=50, step=10, help='Good Performance <---   ---> Smooth Charts') 
+df = calc_func(-edges, edges, highest_y, func_exp, divider)
 
 mpl = show_function(df)
 
-st.pyplot(mpl)
-st.write(x, 'squared is', x * x)
+chart = st.pyplot(mpl)
