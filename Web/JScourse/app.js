@@ -1,19 +1,10 @@
+var obj1 = {a:10, b:20, c:30}
+var obj2 = {a:20, b:40, c:60}
 
-var txtBox = document.getElementById('txtInput')
+obj1 = _.clone(obj2)
+obj1.a = 999
 
-txtBox.addEventListener('keyup', keyBoardPress);
 
-function keyBoardPress(key) {
-    
-    var pressedKey = key.key;
-    var finalVal;
+// replace()
 
-    if (key.key === 'Enter' || key.key === 'Backspace' ) {
-        finalVal = 'Special Value';
-        alert('Pressed Special Key')
-    }
-    else {
-        finalVal = key.key
-    };
-    console.log(finalVal)
-}   
+console.log(obj2.a)
