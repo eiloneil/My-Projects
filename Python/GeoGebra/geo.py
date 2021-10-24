@@ -1,5 +1,5 @@
 import re
-from numpy import divide
+from numpy import divide, exp, kaiser
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -50,7 +50,7 @@ def show_function(df):
     df_def = df[df['isDefined'] == 1]
     ax.plot(df_def['X'], df_def['Y'], marker='o', lw=0)
 
-    df_Zero = df[df['isSwitch'] == 1]
+    df_Zero = df[(df['isSwitch'] == 1) & (df['isDefined'] == 1)]
     ax.plot(df_Zero['X'], df_Zero['Y'], marker='o', color='y', lw=0, markersize=12)
 
     df_undef = df[df['isDefined'] == 0]
@@ -74,7 +74,8 @@ def get_params(param_gen):
 
 
 def func_exp(x):
-    return A*x**3 + B*x**2 + C*x + D
+    return eval(param_final_str.lower().replace('^', '**'))
+    # return A*x**3 + B*x**2 + C*x + D
 
 
 
@@ -98,7 +99,6 @@ params = col1.text_input("A", 0), col2.text_input("B", 1), col3.text_input("C", 
 params = map(float, params)
 
 
-
 params = get_params(params)
 A, B, C, D = params
 
@@ -115,9 +115,16 @@ md = f'<p font-size="55px" style={md_style}> Y = {param_final_str} </p>'
 st.markdown(md, unsafe_allow_html=True)
 
 
+exp1, exp2 = st.columns([2, 1])
+exps = exp1.text_input("Final Expression", param_final_str, key='expression'), exp2.button('Caclulate!')
 
-x = st.slider('x', max_value=1000, value=25) 
-y = st.slider('y', max_value=1000, value=25) 
+if exps[1]:
+    param_final_str = exps[0]
+    st.write('Pressed')
+
+
+x = st.slider('x', max_value=100, value=8) 
+y = st.slider('y', max_value=1000, value=1000, step=5) 
 
 edges = x
 highest_y = y
