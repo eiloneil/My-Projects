@@ -1,0 +1,52 @@
+data = {"DataType" : ['ABS', 'PRC'],
+             "col1" : [49321,1.0],
+             "col2" : [42321,0.9],
+             "col3" : [38321,0.75],
+             "col4" : [19321,0.48],
+             "col5" : [321,0.009]}
+
+df = pd.DataFrame(data)
+
+col_lst = list(df)
+col_lst.remove('DataType')
+data_lsts = df[col_lst].values.tolist()
+
+
+prs_path = r'C:\Users\eilon.eilstein\Desktop\Python\test.pptx'
+prs = Presentation(prs_path)
+slide = prs.slides[1]
+from pptx import Presentation
+from pptx.chart.data import CategoryChartData
+from pptx.enum.chart import XL_CHART_TYPE
+from pptx.util import Inches, Pt
+import pandas as pd
+from pptx.enum.chart import XL_LABEL_POSITION
+from pptx.dml.color import RGBColor
+
+
+# define chart data ---------------------
+chart_data = CategoryChartData()
+chart_data.categories = col_lst
+chart_data.add_series('ABS', data_lsts[0])
+
+# add chart to slide --------------------
+x, y, cx, cy = Inches(1), Inches(1.5), Inches(10), Inches(6)
+frame = slide.shapes.add_chart(
+    XL_CHART_TYPE.COLUMN_CLUSTERED, x, y, cx, cy, chart_data
+)
+
+
+
+chart.category_axis.tick_labels.font.size= Pt(20) 
+chart.value_axis.tick_labels.font.size= Pt(20) 
+chart.value_axis.tick_labels.number_format = '#,##0' 
+
+data_label = plot.chart.plots[0].series[0].points[0].data_label
+data_label.NumberFormat = '#,##0'
+
+chart = frame.chart
+plot = chart.plots[0]
+plot.has_data_labels = True
+
+prs.save(prs_path)
+
