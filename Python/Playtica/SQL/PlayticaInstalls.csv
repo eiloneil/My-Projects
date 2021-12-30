@@ -1,0 +1,5 @@
+UserId,Time_stamp,platform_id,install_source,Country,Gender,Age
+2233,2021-01-02 13:24:56,Android,Organic,us,M,37
+2233,2021-04-14 20:46:12,Facebook,Deep Link,us,M,37
+12145,2021-02-03 02:04:19,Apple,Friend Invite,GB,F,63
+69554,2021-03-17 15:37:44,Facebook,Native,DE,F,72
