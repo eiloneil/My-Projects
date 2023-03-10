@@ -1,6 +1,6 @@
 import pandas as pd
 
-def df_to_sql(df, rtrn='str', query_type='SELECT'):  # AKA DualMaster
+def df_to_sql(df, rtrn='str', query_type='SELECT'):
     """
     Turn Excel or any other Data-Frame into executable SQL
 
