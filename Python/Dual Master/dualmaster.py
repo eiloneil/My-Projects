@@ -62,8 +62,8 @@ def df_to_sql(df, rtrn='str', query_type='SELECT'):
 
     return results[rtrn]
 
-
-
+# Start script
 df = pd.read_clipboard()
 df_sql = df_to_sql(df)
 df_sql.to_clipboard(index=False, header=False)
+# This project convert DFs to SQL syntax
