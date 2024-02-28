@@ -1,9 +1,9 @@
 # placeholder
 
 
-def test():
-    # Insert test logic here
+def main():
+    # Insert main logic here
     pass
 
 if __name__ == '__main__':
-    test()
+    main()
